@@ -25,7 +25,6 @@ const userSchema = new mongoose.Schema({
     hashed_password : 
     {
         type : String,
-        //maxlength: 32,
         required: true
 
     },

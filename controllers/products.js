@@ -3,6 +3,8 @@ const formidable = require('formidable');
 const _ = require('lodash');
 const fs  = require('fs');
 const {errorHandler} = require('../helpers/dbErrorHandler');
+const product = require('../models/product');
+//creat product method
 exports.creat = (req,res) => {
     const product = new Product(req.body);
     let form = new formidable.IncomingForm();
@@ -50,6 +52,24 @@ exports.creat = (req,res) => {
     });
 
 };
+/************************************************************************************* */
+// remove product method
+exports.remove = (req,res) =>{
+    let product = req.product ; 
+    product.remove((err,deletedProduct) => {
+        if(err)
+        {
+            return res.status(400).json({
+            Error : errorHandler(err)
+            });
+        }
+        res.json({Message : "Product deleted successfully"})
+    });
+
+};
+
+
+
 /******************************************
  * creat a middleware productById
  *******************************************/

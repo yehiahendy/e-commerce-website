@@ -71,7 +71,7 @@ exports.update = (req,res) => {
         {
             return res.status(400).json({
                 Error: "Sorry,can't upload this image"
-            });
+            }); 
         }
         // add some validation  
         const {name,description,price,category,Quentity,shipping} = fields

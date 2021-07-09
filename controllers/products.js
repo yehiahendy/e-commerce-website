@@ -6,10 +6,9 @@ const {errorHandler} = require('../helpers/dbErrorHandler');
 const product = require('../models/product');
 //creat product method
 exports.creat = (req,res) => {
-    const product = new Product(req.body);
+    const product = new Product (req.body);
     let form = new formidable.IncomingForm();
     form.keepExtensions = true;
-    consle.log("AA");
     form.parse(req,(err,fields,files) => {
         if(err)
         {
@@ -136,4 +135,132 @@ exports.productById = (req,res,next,id) => {
         next();
     });
 
+}
+/******************************************************
+ * creat list product method 
+ * this method will help us in list all products 
+ * sell = /products?sortBy=sold&order=des&limit=4
+ * arrival = /products?sortBy=createdAt&order=des&limit=4
+ * if no params are not send,   then all products are returned 
+ ********************************************************/
+exports.list = (req,res)=>{
+    let sortBy = req.query.sortBy? req.query.sortBy : '_id'
+    let order = req.query.order ?  req.query.order : 'asc'
+    let limit = req.query.limit ?  parseInt(req.query.limit) : 2
+      product.find() //to get all products
+    .select("-photo") // to reject photos data 
+    .populate("category") //to replace id with category name 
+    .sort([[sortBy,order]])
+    .limit(limit)
+    .exec((err,data) =>{
+
+        if (err || !data )
+        {
+            return res.status(400).json({
+                Error : "Products not found"
+            });
+        }
+        return res.send(data);
+    });
+};
+/****************************************************************
+ * creat a method which lists the products based on categorys 
+ * 
+ ****************************************************************/
+exports.listRelated = (req,res) =>{
+let limit = req.query.limit ? req.query.limit : 6 ;
+product.find({_id : {$ne : req.product},category: req.product.category})//find All products based on the same category
+.select("-photo")
+.limit(limit)
+.populate("category", 'name')
+.exec((err,products) => {
+    
+    if (err || !products )
+    {
+        return res.status(400).json({
+            Error : "Products not found"
+        });
+    }
+    res.json(products);
+
+});
+
+};
+/*****************************************************************
+ * creat method to list Categories of products 
+ */
+exports.listCategories = (req,res) => {
+    product.distinct('category',{},(err,category)=> {
+        if(!category || err)
+        {
+            return res.status(400).json({
+                Error: "This product dose not exist"
+            });
+        }
+        res.send(category);
+
+    });
+} 
+
+/***********************************************************************
+ * list products by search
+ * we will implement product search in react frontend
+ * we will show categories in checkbox and price range in radio buttons
+ * as the user clicks on those checkbox and radio buttons
+ * we will make api request and show the products to users based on what he wants
+ *********************************************************************************/
+
+ exports.listBySearch = (req, res) => {
+    let order = req.body.order ? req.body.order : "desc";
+    let sortBy = req.body.sortBy ? req.body.sortBy : "_id";
+    let limit = req.body.limit ? parseInt(req.body.limit) : 100;
+    let skip = parseInt(req.body.skip);
+    let findArgs = {};
+
+    // console.log(order, sortBy, limit, skip, req.body.filters);
+    // console.log("findArgs", findArgs);
+
+    for (let key in req.body.filters) {
+        if (req.body.filters[key].length > 0) {
+            if (key === "price") {
+                // gte -  greater than price [0-10]
+                // lte - less than
+                findArgs[key] = {
+                    $gte: req.body.filters[key][0],
+                    $lte: req.body.filters[key][1]
+                };
+            } else {
+                findArgs[key] = req.body.filters[key];
+            }
+        }
+    }
+
+    Product.find(findArgs)
+        .select("-photo")
+        .populate("category")
+        .sort([[sortBy, order]])
+        .skip(skip)
+        .limit(limit)
+        .exec((err, data) => {
+            if (err) {
+                return res.status(400).json({
+                    error: "Products not found"
+                });
+            }
+            res.json({
+                size: data.length,
+                data
+            });
+        });
+};
+/******************************************************************
+ * creat a method to send photo of product 
+ ******************************************************************/
+exports.photo = (req,res,next) => {
+  if(req.product.photo.data)
+  {
+    res.set("Content-Type",req.product.photo.contentType);
+    return res.send(req.product.photo.data);
+    next();
+  }  
 }

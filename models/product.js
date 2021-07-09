@@ -26,13 +26,17 @@ const productSchema = new mongoose.Schema({
     {
         type: mongoose.Schema.Types.ObjectId,
         required: true,
-        ref: 'Category',
+        ref: 'category',
         maxLength : 32
     },
     Quentity :
     {
         type : Number,
         required: true
+    },
+    sold :
+    {
+        type : Number,
     },
     photo :
     {

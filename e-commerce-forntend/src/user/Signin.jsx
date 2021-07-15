@@ -1,6 +1,7 @@
 import React, { useState }  from 'react';
 import { Redirect } from 'react-router-dom';
 import Layout from './../core/Layout';
+import authentication from './auth';
 const Signin = () => {
     const [values,setValues] = useState({
         email: '',
@@ -10,68 +11,7 @@ const Signin = () => {
         redirectToReferrer : false
     });
     const {email,password, error,loading,redirectToReferrer } = values;
-    const handelChanges = name => event =>
-    {
-        setValues({...values,loading :false,redirectToReferrer :false,[name]:event.target.value});
-    }
-    const signinSubmit = user =>{
-
-        return (fetch("http://localhost:8000/api/signin", {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(user)
-        })
-        .then(Response =>{
-        
-            return Response.json();
-    
-        })
-        .catch(err => {
-            console.log(err)
-        }));
-    }
-    const submitHandler = (e) =>{
-        e.preventDefault();
-        signinSubmit({email,password})
-        //this part to get the error msg and clear the text field
-        .then(                             
-            data => {
-                if(data.error)
-                {
-                    setValues({...values,error:data.error,loading : false,redirectToReferrer : false})
-                }
-                else{
-                    setValues({...values,
-                        email : '',
-                        password : '',
-                        error : false,
-                        loading : true,
-                        redirectToReferrer : true
-                    })
-                }
-            });
-        
-        }
-    const showErrorMsg = () => {
-        return(
-            <div className = "alert alert-danger" style = {{display : error ? '' :'none'}}>{error}</div>
-        );
-        }
-        const showSuccessMsg = () => {
-            return(
-                <div className = "alert alert-info" style = {{display : loading ? '' :'none'}}>
-                    Loading......
-                    </div>
-            );
-        }
-    const redirectUser = () =>{
-            if (redirectToReferrer)
-            {
-
-                return (<Redirect to="/" />);
-            }
-            
-    }
+/******************************************************************************************************************************* */
     const creatUi = () => 
     {
         return(
@@ -88,6 +28,80 @@ const Signin = () => {
             </form>
         );
     }
+/************************************************************************************************************************************ */
+    const handelChanges = name => event =>
+    {
+        setValues({...values,loading :false,redirectToReferrer :false,[name]:event.target.value});
+    }
+/************************************************************************************************************************************** */
+    const signinSubmit = user =>{
+
+        return (fetch("http://localhost:8000/api/signin", {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(user)
+        })
+        .then(Response =>{
+        
+            return Response.json();
+    
+        })
+        .catch(err => {
+            console.log(err)
+        }));
+    }
+/********************************************************************************************************************************************** */
+    const submitHandler = (e) =>{
+        e.preventDefault();
+        signinSubmit({email,password})
+        //this part to get the error msg and clear the text field
+        .then(                             
+            data => {
+                if(data.error)
+                {
+                    setValues({...values,error:data.error,loading : false,redirectToReferrer : false})
+                }
+                else{
+
+                    authentication(data,
+                    () => setValues({...values,
+                            email : '',
+                            password : '',
+                            error : false,
+                            loading : true,
+                            redirectToReferrer : true
+                        })
+                        );
+                }
+            });
+        
+        }
+/********************************************************************************************************************************************* */
+    const showErrorMsg = () => {
+        return(
+            <div className = "alert alert-danger" style = {{display : error ? '' :'none'}}>{error}</div>
+        );
+        }
+        const showSuccessMsg = () => {
+            return(
+                <div className = "alert alert-info" style = {{display : loading ? '' :'none'}}>
+                    Loading......
+                    </div>
+            );
+        }
+/**************************************************************************************************************************************************** */
+    const redirectUser = () =>{
+            if (redirectToReferrer)
+            {
+
+                return (<Redirect to="/" />);
+            }
+            
+    }
+
+
+/***************************************************************************************************************************************************** */
+
 
 return(
 <Layout title ="Sign in Page" discreption = "This is the sign in page for Ecommerce website " className = "container col-md-8 offset-md-2">

@@ -14,11 +14,11 @@ exports.signup = (req,res) =>{
     const user   = new User(req.body);
     //console.log("this is user");
     //console.log(user);
-    user.save((err,user) =>{
-        if(err)
+    user.save((error,user) =>{
+        if(error)
         {
             return res.status(400).json({
-                err: errorHandler(err)
+                error: errorHandler(error)
             })
 
 
@@ -42,18 +42,18 @@ exports.signin = (req,res) =>
 {
     //find the user based on email 
     const {email,password} = req.body
-    User.findOne({email},(err,user) => {
-        if (err || !user)
+    User.findOne({email},(error,user) => {
+        if (error || !user)
         {
             return res.status(400).json({
-                err : "User dose not exist"
+                error : "User dose not exist"
             })
         }
         //if the user is exist check that the pass and email are match with db 
         if(!user.authorization(password))
         {
             return res.status(401).json({
-                err : "Email and password  don't match"
+                error : "Email and password  don't match"
             })
         }
          //creat the user sign in token

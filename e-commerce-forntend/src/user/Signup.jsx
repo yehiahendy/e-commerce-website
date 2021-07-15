@@ -1,6 +1,7 @@
 import React from 'react';
 import { useState } from 'react';
 import Layout from '../core/Layout';
+import { Link } from 'react-router-dom';
 const Signup = () => {
    const [values,setValues] = useState({
         name :'',
@@ -9,37 +10,52 @@ const Signup = () => {
         error : '',
         success : false
     });
-    const {name,email,password} = values;
+    const {name,email,password,error,success} = values;
 const handelChanges = name => event => {
     setValues({...values,error :false,[name]:event.target.value})
 
 }
 const sinupSubmit = user =>{
 
-    fetch("http://localhost:8000/api/signup", {
+   return (fetch("http://localhost:8000/api/signup", {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(user)
     })
     .then(Response =>{
     
-        return Response.JSON();
+        return Response.json();
 
     })
     .catch(err => {
         console.log(err)
-    });
+    }));
 
 }
 const submitHandler = (e) =>{
 e.preventDefault();
-sinupSubmit({name,email,password});
+sinupSubmit({name,email,password})
+//this part to get the error msg and clear the text field
+.then(                             
+    data => {
+        if(data.error)
+        {
+            setValues({...values,error:data.error,success: false})
+        }
+        else{
+            setValues({...values,
+                name :'',
+                email : '',
+                password : '',
+                error : false,
+                success : true
+            })
+        }
+    });
 
 }
-
-
-return(
-<Layout title ="Sign up Page" discreption = "This is the sign up page for Ecommerce website " className = "container col-md-8 offset-md-2">
+const creatUi = () => {
+    return(
         <form>
             <div className = "form-group">
                 <label className ="text-muted">name</label>
@@ -47,15 +63,36 @@ return(
             </div>
             <div className = "form-group">
                 <label className ="text-muted">email</label>
-                <input type="text" className = "form-control " onChange = {handelChanges('email')} />
+                <input type="email" className = "form-control " onChange = {handelChanges('email')} />
             </div>
             <div className = "form-group">
                 <label className ="text-muted">password</label>
-                <input type="text" className = "form-control" onChange = {handelChanges('password')} />
+                <input type="password" className = "form-control" onChange = {handelChanges('password')} />
             </div>
             <button className = " btn btn-primary" onClick={submitHandler}>Submit</button>
         </form>
-    {JSON.stringify(values)}
+    );
+}
+const showErrorMsg = () => {
+    return(
+        <div className = "alert alert-danger" style = {{display : error ? '' :'none'}}>{error}</div>
+    );
+}
+const showSuccessMsg = () => {
+    return(
+        <div className = "alert alert-info" style = {{display : success ? '' :'none'}}>
+            New account is created please
+            <Link to="/signin"> Sign in</Link>
+            </div>
+    );
+}
+
+
+return(
+<Layout title ="Sign up Page" discreption = "This is the sign up page for Ecommerce website " className = "container col-md-8 offset-md-2">
+    {showSuccessMsg()}
+    {showErrorMsg()}
+    {creatUi()}
 
 </Layout>
 

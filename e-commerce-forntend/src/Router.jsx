@@ -7,11 +7,11 @@ import Home from './core/Home';
 const Routes = ()=>{
     return (
         <BrowserRouter>
-           
+        
             <Switch>
-                <Route path = '/signup'  component = {signup}/>
-                <Route path = '/signin'  component = {Signin}/>
-                <Route path = '/'  component = {Home}/>
+                <Route path = '/signup' exact component = {signup}/>
+                <Route path = '/signin' exact  component = {Signin}/>
+                <Route path = '/'  exact component = {Home}/>
 
             </Switch>
         </BrowserRouter>

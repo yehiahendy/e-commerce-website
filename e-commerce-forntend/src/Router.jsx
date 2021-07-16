@@ -3,6 +3,8 @@ import {BrowserRouter,Switch,Route} from"react-router-dom";
 import signup from './user/Signup';
 import Signin from './user/Signin';
 import Home from './core/Home';
+import dashBoard from './user/dashBoard';
+import PrivateRoute from './auth/PrivateRoute';
 
 const Routes = ()=>{
     return (
@@ -12,6 +14,7 @@ const Routes = ()=>{
                 <Route path = '/signup' exact component = {signup}/>
                 <Route path = '/signin' exact  component = {Signin}/>
                 <Route path = '/'  exact component = {Home}/>
+                <PrivateRoute path = '/dashboard'  exact component = {dashBoard}/>
 
             </Switch>
         </BrowserRouter>

@@ -1,7 +1,7 @@
 import React, { useState }  from 'react';
 import { Redirect } from 'react-router-dom';
 import Layout from './../core/Layout';
-import authentication from './auth';
+import authentication,{isAuthenticate} from './auth';
 const Signin = () => {
     const [values,setValues] = useState({
         email: '',
@@ -11,6 +11,7 @@ const Signin = () => {
         redirectToReferrer : false
     });
     const {email,password, error,loading,redirectToReferrer } = values;
+    const {user} = isAuthenticate();
 /******************************************************************************************************************************* */
     const creatUi = () => 
     {
@@ -93,8 +94,10 @@ const Signin = () => {
     const redirectUser = () =>{
             if (redirectToReferrer)
             {
-
-                return (<Redirect to="/" />);
+                if((user.role === 0) && user)
+                return (<Redirect to="/user/dashboard" />);
+                else 
+                return (<Redirect to="/admin/dashboard" />);
             }
             
     }

@@ -3,7 +3,7 @@ import { useState } from 'react';
 import Layout from '../core/Layout';
 import { Link } from 'react-router-dom';
 const Signup = () => {
-   const [values,setValues] = useState({
+const [values,setValues] = useState({
         name :'',
         email : '',
         password : '',
@@ -17,7 +17,7 @@ const handelChanges = name => event => {
 }
 const sinupSubmit = user =>{
 
-   return (fetch("http://localhost:8000/api/signup", {
+return (fetch("http://localhost:8000/api/signup", {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(user)
@@ -27,8 +27,8 @@ const sinupSubmit = user =>{
         return Response.json();
 
     })
-    .catch(err => {
-        console.log(err)
+    .catch(error => {
+        return error;
     }));
 
 }
@@ -43,6 +43,7 @@ sinupSubmit({name,email,password})
             setValues({...values,error:data.error,success: false})
         }
         else{
+            
             setValues({...values,
                 name :'',
                 email : '',

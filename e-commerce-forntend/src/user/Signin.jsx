@@ -7,11 +7,12 @@ const Signin = () => {
         email: '',
         password: '',
         error: '',
+        history : '',
         loading : false,
         redirectToReferrer : false
     });
     const {email,password, error,loading,redirectToReferrer } = values;
-    const {user} = isAuthenticate();
+    const {user}= isAuthenticate();
 /******************************************************************************************************************************* */
     const creatUi = () => 
     {
@@ -48,7 +49,9 @@ const Signin = () => {
     
         })
         .catch(err => {
-            console.log(err)
+            console.log(err);
+                        return err;
+
         }));
     }
 /********************************************************************************************************************************************** */
@@ -58,12 +61,11 @@ const Signin = () => {
         //this part to get the error msg and clear the text field
         .then(                             
             data => {
-                if(data.error)
+                if(data.err)
                 {
-                    setValues({...values,error:data.error,loading : false,redirectToReferrer : false})
+                    setValues({...values,error:data.err,loading : false,redirectToReferrer : false})
                 }
                 else{
-
                     authentication(data,
                     () => setValues({...values,
                             email : '',
@@ -91,14 +93,19 @@ const Signin = () => {
             );
         }
 /**************************************************************************************************************************************************** */
-    const redirectUser = () =>{
-            if (redirectToReferrer)
-            {
-                if((user.role === 0) && user)
-                return (<Redirect to="/user/dashboard" />);
-                else 
-                return (<Redirect to="/admin/dashboard" />);
-            }
+    const redirectUser = () => {
+                
+                if (redirectToReferrer)
+                {
+                    if((user.role === 0) && user)
+                    return (<Redirect to="/user/dashboard" />);
+                    else 
+                    return (<Redirect to="/admin/dashboard" />);
+                }
+                if(isAuthenticate())
+                {
+                    return (<Redirect to = "/"></Redirect>);
+                }
             
     }
 
@@ -112,6 +119,7 @@ return(
 {showErrorMsg()}
 {creatUi()}
 {redirectUser()}
+
 </Layout>
 );
 }

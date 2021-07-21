@@ -52,13 +52,8 @@ const dashBoard = () => {
                 {userInfo()}
                 {purchaseHistory()}
                 </div>
-
-
             </div>
             
-
-
-
         </Layout>
     );
 }

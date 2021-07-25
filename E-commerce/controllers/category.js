@@ -51,7 +51,7 @@ exports.remove = (req,res) => {
 };
 /****************************************************************** */
 exports.list = (req,res) => {
-    category.find().exec((err,data) => {
+    Category.find().exec((err,data) => {
         if(err || !data)
         {
             return res.status(400).json({

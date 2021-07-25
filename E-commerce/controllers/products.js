@@ -13,7 +13,7 @@ exports.creat = (req,res) => {
         if(err)
         {
             return res.status(400).json({
-            Error: "image can't be uploaded"
+            error: "image can't be uploaded"
             });
         }
         // make constrains to file size
@@ -21,7 +21,7 @@ exports.creat = (req,res) => {
         if (files.photo.size > 1000000)
         {
             return res.status(400).json({
-                Error: "Sorry,can't upload this image"
+                error: "Sorry,can't upload this image"
             });
         }
         // add some validation  
@@ -29,7 +29,7 @@ exports.creat = (req,res) => {
         if(!name || !description || !price || !category || !Quentity || !shipping )
         {
             return res.status(400).json({
-                Error: "All fields are rquired"
+                error: "All fields are rquired"
             });
         }
         
@@ -44,7 +44,7 @@ exports.creat = (req,res) => {
             if(err)
             {
                 return res.status(400).json({
-                    Error: errorHandler(err)
+                    error: errorHandler(err)
                 });
             }
             res.json(result);
@@ -61,7 +61,7 @@ exports.update = (req,res) => {
         if(err)
         {
             return res.status(400).json({
-            Error: "image can't be uploaded"
+            error: "image can't be uploaded"
             });
         }
         // make constrains to file size
@@ -69,7 +69,7 @@ exports.update = (req,res) => {
         if (files.photo.size > 1000000)
         {
             return res.status(400).json({
-                Error: "Sorry,can't upload this image"
+                error: "Sorry,can't upload this image"
             }); 
         }
         // add some validation  
@@ -77,7 +77,7 @@ exports.update = (req,res) => {
         if(!name || !description || !price || !category || !Quentity || !shipping )
         {
             return res.status(400).json({
-                Error: "All fields are rquired"
+                error: "All fields are rquired"
             });
         }
         
@@ -109,7 +109,7 @@ exports.remove = (req,res) =>{
         if(err)
         {
             return res.status(400).json({
-            Error : errorHandler(err)
+            error : errorHandler(err)
             });
         }
         res.json({Message : "Product deleted successfully"})

@@ -25,7 +25,7 @@ exports.creat = (req,res) => {
             });
         }
         // add some validation  
-        const {name,description,price,category,Quentity,shipping} = fields
+        const {name,description,price,category,Quentity,shipping,sold} = fields
         if(!name || !description || !price || !category || !Quentity || !shipping )
         {
             return res.status(400).json({

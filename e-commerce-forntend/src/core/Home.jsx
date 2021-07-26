@@ -2,6 +2,8 @@ import React from 'react';
 import Layout from './Layout';
 import { getProduct } from './apiCore';
 import { useState, useEffect } from 'react';
+import Card from './Card';
+import { API } from '../config';
 const Home = () => {
 const [productBySell,setproductBySell] = useState([])
 const [productByArrival,setproductByArrival] = useState([]);
@@ -43,10 +45,20 @@ useEffect(() => {
 },[])
 return(
 
-    <Layout title ="Home Page" discreption = "This is the Home page for Ecommerce website ">
-
-    <br></br>
-    {JSON.stringify(productBySell)}
+    <Layout title ="Home Page" discreption = "This is the Home page for Ecommerce website " className = "container">
+        <h2>New Arrival</h2>
+        <div className = "row">
+            {productByArrival.map((product,i) => {
+            return(<Card key = {i} product = {product}/>); 
+            })}
+        </div>
+        <br></br>
+        <h2>Best Sellers</h2>
+        <div className = "row">
+            {productBySell.map((product,i) => {
+            return(<Card key = {i} product = {product}/>); 
+            })}
+        </div>
     </Layout>
 );
 }

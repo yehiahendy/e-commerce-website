@@ -2,6 +2,7 @@ import React, { useState }  from 'react';
 import { Redirect } from 'react-router-dom';
 import Layout from './../core/Layout';
 import authentication,{isAuthenticate} from './auth';
+import { API } from './../config';
 const Signin = () => {
     const [values,setValues] = useState({
         email: '',
@@ -38,7 +39,7 @@ const Signin = () => {
 /************************************************************************************************************************************** */
     const signinSubmit = user =>{
 
-        return (fetch("http://localhost:8000/api/signin", {
+        return (fetch(`${API}/signin`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(user)

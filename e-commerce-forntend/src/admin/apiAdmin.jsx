@@ -1,6 +1,7 @@
+import { API } from './../config';
 const AddNewCategory = (userId,token,cateogry) => {
     return(
-        fetch(`http://localhost:8000/api/category/creat/${userId}`, {
+        fetch(`${API}/category/creat/${userId}`, {
         method: 'POST',
         headers:
         { 'Content-Type': 'application/json',
@@ -18,7 +19,7 @@ const AddNewCategory = (userId,token,cateogry) => {
 } 
 const AddNewProduct = (userId,token,product) => {
     return(
-        fetch(`http://localhost:8000/api/product/creat/${userId}`, {
+        fetch(`${API}/product/creat/${userId}`, {
         method: 'POST',
         headers:
         { 
@@ -36,7 +37,7 @@ const AddNewProduct = (userId,token,product) => {
 } 
 const getCategory = () => {
     return(
-        fetch(`http://localhost:8000/api/category/list`, {
+        fetch(`${API}/category/list`, {
         method: 'GET'
     })
     .then(Response => {

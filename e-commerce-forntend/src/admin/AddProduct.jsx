@@ -90,7 +90,7 @@ const showErrorMsg = () => {
         return(
             <div className = "alert alert-info" style = {{display : createdProduct ? '' :'none'}}>
                 <h2>
-                    {createdProduct} is created
+                {createdProduct} is created
                 </h2>
                 </div>
         );

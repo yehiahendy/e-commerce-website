@@ -3,7 +3,6 @@ const formidable = require('formidable');
 const _ = require('lodash');
 const fs  = require('fs');
 const {errorHandler} = require('../helpers/dbErrorHandler');
-const product = require('../models/product');
 //creat product method
 exports.creat = (req,res) => {
     const product = new Product (req.body);
@@ -125,13 +124,14 @@ exports.remove = (req,res) =>{
 exports.productById = (req,res,next,id) => {
 
     Product.findById(id).exec((err,product) =>{
-        if(!product || err)
+         if(!product || err)
         {
-            return res.status(400).json({
-                Error: "This product dose not exist"
+             res.status(400).json({
+                error: "This product dose not exist"
             });
         }
         req.product = product; 
+        
         next();
     });
 
@@ -147,7 +147,7 @@ exports.list = (req,res)=>{
     let sortBy = req.query.sortBy? req.query.sortBy : '_id'
     let order = req.query.order ?  req.query.order : 'asc'
     let limit = req.query.limit ?  parseInt(req.query.limit) : 2
-      product.find() //to get all products
+      Product.find() //to get all products
     .select("-photo") // to reject photos data 
     .populate("category") //to replace id with category name 
     .sort([[sortBy,order]])
@@ -169,7 +169,7 @@ exports.list = (req,res)=>{
  ****************************************************************/
 exports.listRelated = (req,res) =>{
 let limit = req.query.limit ? req.query.limit : 6 ;
-product.find({_id : {$ne : req.product},category: req.product.category})//find All products based on the same category
+Product.find({_id : {$ne : req.product},category: req.product.category})//find All products based on the same category
 .select("-photo")
 .limit(limit)
 .populate("category", 'name')
@@ -190,7 +190,7 @@ product.find({_id : {$ne : req.product},category: req.product.category})//find A
  * creat method to list Categories of products 
  */
 exports.listCategories = (req,res) => {
-    product.distinct('category',{},(err,category)=> {
+    Product.distinct('category',{},(err,category)=> {
         if(!category || err)
         {
             return res.status(400).json({
@@ -216,10 +216,7 @@ exports.listCategories = (req,res) => {
     let limit = req.body.limit ? parseInt(req.body.limit) : 100;
     let skip = parseInt(req.body.skip);
     let findArgs = {};
-
-    // console.log(order, sortBy, limit, skip, req.body.filters);
-    // console.log("findArgs", findArgs);
-
+    //console.log(order, sortBy, limit, skip, req.body.filter);
     for (let key in req.body.filters) {
         if (req.body.filters[key].length > 0) {
             if (key === "price") {
@@ -230,6 +227,7 @@ exports.listCategories = (req,res) => {
                     $lte: req.body.filters[key][1]
                 };
             } else {
+                console.log(req.body.filters[key]);
                 findArgs[key] = req.body.filters[key];
             }
         }
@@ -257,10 +255,41 @@ exports.listCategories = (req,res) => {
  * creat a method to send photo of product 
  ******************************************************************/
 exports.photo = (req,res,next) => {
-  if(req.product.photo.data)
-  {
+if(req.product.photo.data)
+{
     res.set("Content-Type",req.product.photo.contentType);
     return res.send(req.product.photo.data);
     next();
-  }  
+}  
+}
+exports.listSearch = (req,res) => {
+    const query = {}
+    if(req.query.search)
+    {
+        query.name = {$regex: req.query.search,$options: 'i'}
+        if(req.query.category && req.query.category != 'All')
+        {
+            query.category = req.query.category
+        }
+        console.log(query.name)
+        Product.find(query)
+        .select('-photo')
+        .exec((err,products) => {
+    
+            if (err || !products )
+            {
+                return res.status(400).json({
+                    Error : "Products not found"
+                });
+            }
+            res.json(products);
+        
+        })
+    }
+
+}
+exports.read = (req,res) => 
+{
+    req.product.photo = undefined
+    return res.json(req.product)
 }

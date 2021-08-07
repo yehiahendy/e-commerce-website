@@ -13,6 +13,8 @@ const authRoutes = require('./routes/auth')
 const categoryRoutes = require('./routes/category')
 const userRoutes = require('./routes/user')
 const productRoutes = require('./routes/products')
+const braintreeRoutes = require('./routes/braintree')
+const orderRoutes = require('./routes/order')
 //database connection 
 mongoose.connect(process.env.DATA_BASE,{
 useNewUrlParser : true,////????
@@ -31,5 +33,7 @@ app.use('/api',categoryRoutes);
 app.use("/api",authRoutes);
 app.use("/api",userRoutes);
 app.use("/api",productRoutes);
+app.use("/api",braintreeRoutes);
+app.use("/api",orderRoutes);
 const port = process.env.PORT;
 app.listen(port,function () {console.log("Server is running "+port);});

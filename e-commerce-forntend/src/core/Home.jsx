@@ -48,15 +48,23 @@ return(
     <Layout title ="Home Page" discreption = "This is the Home page for Ecommerce website " className = "container">
         <h2>New Arrival</h2>
         <div className = "row">
-            {productByArrival.map((product,i) => {
-            return(<Card key = {i} product = {product}/>); 
+        {productByArrival.map((product,i) => {
+                return(
+            <div key = {i} className = "col-4 mb-3">
+            <Card  product = {product}/>
+            </div>
+                );
             })}
         </div>
         <br></br>
         <h2>Best Sellers</h2>
         <div className = "row">
-            {productBySell.map((product,i) => {
-            return(<Card key = {i} product = {product}/>); 
+        {productBySell.map((product,i) => {
+                return(
+            <div key = {i} className = "col-4 mb-3">
+            <Card  product = {product}/>
+            </div>
+                );
             })}
         </div>
     </Layout>

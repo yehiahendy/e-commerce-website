@@ -35,7 +35,7 @@ const dashBoard = () => {
                 <header className = "card-header"> <strong> User links</strong></header>
                 <ul className = "list-group">
                     <li className = "list-group-item">
-                        <NavLink to = "/card"> My card</NavLink>
+                        <NavLink to = "/my/cart"> My card</NavLink>
                     </li>
                     <li className = "list-group-item">
                         <NavLink to = "/profile/update"> Update My profile</NavLink>

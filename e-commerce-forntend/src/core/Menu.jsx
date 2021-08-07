@@ -4,6 +4,8 @@ import { withRouter } from 'react-router';
 import SignOut from '../user/Signout';
 import { isAuthenticate } from '../user/auth';
 import { Fragment } from 'react';
+import Cart from './Cart';
+import { itemTotal } from './CartHelper';
 const isActive = (history,path) =>
 {
 
@@ -18,6 +20,11 @@ const menu = ({history}) =>{
                 </li>
                 <li className = "nav-item">
                     <Link className = "nav-link" to ="/shop" style = {isActive(history,"/shop")}>Shop</Link>
+                </li>
+                <li className = "nav-item">
+                    <Link className = "nav-link" to ="/cart" style = {isActive(history,"/cart")}>
+                        Cart <sup className = 'cart-badge'><small>{itemTotal()}</small></sup>
+                    </Link>
                 </li>
                 {
                     ((isAuthenticate()) && (isAuthenticate().user.role === 0) && 

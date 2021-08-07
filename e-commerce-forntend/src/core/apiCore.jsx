@@ -79,8 +79,73 @@ const read = productId => {
     })
     );
 }
+const listRelatedProducts = productId => {
+    
+    return( 
+        
+        fetch(`${API}/products/relate/${productId}`, {
+        method: 'GET'
+    })
+    .then(Response => {
+        return Response.json();
+    })
+    .catch(error => {
+        return error;
+    })
+    );
+}
+const getBraintreeClientToken = (userId,token) => {
+    return(
+        fetch(`${API}/braintree/gettoken/${userId}`, {
+        method: 'GET',
+        headers:
+        { 'Content-Type': 'application/json',
+            Authorization : `Bearer ${token}`
+        },
+    })
+    .then(Response => {
+        return Response.json();
+    })
+    .catch(error => {
+        return error;
+    })
+    );
+} 
+export const processPayment = (userId, token, paymentData) => {
+    return fetch(`${API}/braintree/payment/${userId}`, {
+        method: "POST",
+        headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`
+        },
+        body: JSON.stringify(paymentData)
+    })
+        .then(response => {
+            return response.json();
+        })
+        .catch(err => console.log(err));
+};
+
+export const createOrder = (userId, token, createOrderData) => {
+    return fetch(`${API}/order/create/${userId}`, {
+        method: "POST",
+        headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`
+        },
+        body: JSON.stringify({ order: createOrderData })
+    })
+        .then(response => {
+            return response.json();
+        })
+        .catch(err => console.log(err));
+};
 export {getProduct};
+export {getBraintreeClientToken};
 export {getCategory};
 export {getFilterdProducts};
 export {list};
 export {read};
+export {listRelatedProducts};

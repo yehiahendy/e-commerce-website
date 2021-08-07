@@ -123,10 +123,12 @@ exports.remove = (req,res) =>{
  *******************************************/
 exports.productById = (req,res,next,id) => {
 
-    Product.findById(id).exec((err,product) =>{
-         if(!product || err)
+    Product.findById(id)
+    .populate("category")
+    .exec((err,product) =>{
+        if(!product || err)
         {
-             res.status(400).json({
+            res.status(400).json({
                 error: "This product dose not exist"
             });
         }

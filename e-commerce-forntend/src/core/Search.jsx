@@ -74,23 +74,35 @@ const Search = () => {
         );
     }
     const SearchForm = () => (
-        <form onSubmit ={onSubmitHandler}>
-            <span className = 'input-group-text'>
-                <div className ='input-group '>
-                    <div className = "input-group-prepend mr-2 mt-2 ml-2 mb-2">
-                        <select className = 'btn mr-2' onChange = {onHandelChange('category')}>
-                            <option value = "All">Pick Category</option>
-                            {categories.map((c,i) => (
-                                <option key = {i} value = {c._id} >{c.name}</option>
+        <form onSubmit={onSubmitHandler}>
+            <span className="input-group-text">
+                <div className="input-group input-group-lg">
+                    <div className="input-group-prepend">
+                        <select
+                            className="btn mr-2"
+                            onChange={onHandelChange("category")}
+                        >
+                            <option value="All">All</option>
+                            {categories.map((c, i) => (
+                                <option key={i} value={c._id}>
+                                    {c.name}
+                                </option>
                             ))}
                         </select>
                     </div>
-                        <input type ='search' className = 'form-control mt-2 mr-2 ml-2' placeholder = "Search by name" onChange = {onHandelChange('search')}></input>
+
+                    <input
+                        type="search"
+                        className="form-control"
+                        onChange={onHandelChange("search")}
+                        placeholder="Search by name"
+                    />
                 </div>
-                <div className = 'btn input-group-append ' style ={{border:'none'}}>
-                    <button className = 'input-group-text'>
-                        Search
-                    </button>
+                <div
+                    className="btn input-group-append"
+                    style={{ border: "none" }}
+                >
+                    <button className="input-group-text">Search</button>
                 </div>
             </span>
         </form>

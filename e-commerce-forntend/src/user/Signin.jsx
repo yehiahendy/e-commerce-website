@@ -49,9 +49,9 @@ const Signin = () => {
             return Response.json();
     
         })
-        .catch(err => {
-            console.log(err);
-                        return err;
+        .catch(error => {
+            console.log(error);
+                        return error;
 
         }));
     }
@@ -62,9 +62,9 @@ const Signin = () => {
         //this part to get the error msg and clear the text field
         .then(                             
             data => {
-                if(data.err)
+                if(data.error)
                 {
-                    setValues({...values,error:data.err,loading : false,redirectToReferrer : false})
+                    setValues({...values,error:data.error,loading : false,redirectToReferrer : false})
                 }
                 else{
                     authentication(data,
@@ -98,7 +98,7 @@ const Signin = () => {
                 
                 if (redirectToReferrer)
                 {
-                    if((user.role === 0) && user)
+                    if(user !== null && (user.role === 0))
                     return (<Redirect to="/user/dashboard" />);
                     else 
                     return (<Redirect to="/admin/dashboard" />);

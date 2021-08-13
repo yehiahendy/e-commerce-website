@@ -1,12 +1,12 @@
-import React from 'react';
-import {useState} from 'react';
+import React, { useRef } from 'react';
+import {useState,useEffect} from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import ShowImage from './ShowImage';
 import Moment from 'react-moment';
 import {addItem, itemTotal,updateItem,removeItem} from './CartHelper'
 
 const Card = ({product,viewProductButton = true,viewAddToCart = true ,cartUpdate = false,
-    showRemoveProductButton = false,
+    showRemoveProductButton = false,location = '/',
     setRun = f => f,
     run = undefined}) => {
     const [redirect,setRedirect] = useState(false)
@@ -68,7 +68,7 @@ const Card = ({product,viewProductButton = true,viewAddToCart = true ,cartUpdate
     const RedirectTo = () =>{
         if(redirect)
         return(
-            <Redirect to = '/cart'></Redirect>
+            <Redirect to = {location}></Redirect>
         );
     }
     const showCartUpdateOptions = cartUpdate => {
@@ -105,6 +105,7 @@ const Card = ({product,viewProductButton = true,viewAddToCart = true ,cartUpdate
                 {showCartUpdateOptions(cartUpdate)}
                 {showStock(product.Quentity)}
                 {RedirectTo()}
+                
                 
             </div>
         </div>

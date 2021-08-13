@@ -41,6 +41,10 @@ sinupSubmit({name,email,password})
     data => {
         if(data.error)
         {
+            if (data.error === '11000 duplicate key error collection: ecommerceApp.users index: email already exists')
+            {
+                data.error = 'email already exists'
+            }
             setValues({...values,error:data.error,success: false})
         }
         else{

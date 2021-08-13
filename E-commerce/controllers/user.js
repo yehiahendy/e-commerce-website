@@ -21,22 +21,56 @@ exports.read = (req, res) => {
 };
 
 exports.update = (req, res) => {
-    User.findOneAndUpdate(
-        { _id: req.profile._id },
-        { $set: req.body },
-        { new: true },
-        (err, user) => {
-            if (err) {
+    const { email, password, name } = req.body;
+    if(password !== '')
+    {
+        User.findById(req.profile._id )
+        .exec((err,data) => {
+            if(err)
+            {
                 return res.status(400).json({
-                    error: "You are not authorized to perform this action"
-                });
+                    error: err
+                })
             }
-            user.hashed_password = undefined;
-            user.salt = undefined;
-            res.json(user);
-        }
-    );
+            const pass = data.encryptPassword(password)
+            User.findOneAndUpdate(
+                { _id: req.profile._id },
+                { $set: {name:name, email:email ,hashed_password : pass}},
+                
+                (err, user) => {
+                    if (err) {
+                        return res.status(400).json({
+                            error: "You are not authorized to perform this action"
+                        });
+                    }
+                    user.hashed_password = undefined;
+                    user.salt = undefined;
+                    res.json(user);
+                }
+            );
+        })
+    }
+    else
+    {
+        User.findOneAndUpdate(
+            { _id: req.profile._id },
+            { $set: req.body},
+            
+            (err, user) => {
+                if (err) {
+                    return res.status(400).json({
+                        error: "You are not authorized to perform this action"
+                    });
+                }
+                user.hashed_password = undefined;
+                user.salt = undefined;
+                res.json(user);
+            }
+        );
+    }
+    
 };
+
 exports.addOrderToUser = (req,res,next) => {
     let history = []
     req.body.order.products.forEach(item => {

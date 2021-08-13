@@ -113,7 +113,7 @@ const Shop = () =>{
             {filteredResults.map((product,i) => {
                 return(
             <div key = {i} className = "col-4 mb-3">
-            <Card  product = {product}/>
+            <Card  product = {product} location = {'/shop'}/>
             </div>
                 );
             })}

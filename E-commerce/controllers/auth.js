@@ -10,10 +10,7 @@ const express  = require('express');
  * 
  ********************************************************/
 exports.signup = (req,res) =>{
-    console.log("req.body",req.body)
     const user   = new User(req.body);
-    //console.log("this is user");
-    //console.log(user);
     user.save((error,user) =>{
         if(error)
         {

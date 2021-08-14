@@ -15,6 +15,7 @@ const AddProduct = () => {
         photo: '',
         shipping : '',
         error: '',
+        sold: 0,
         loading : false, 
         createdProduct : '',
         redirectToProfile: '',
@@ -28,7 +29,8 @@ const AddProduct = () => {
         error,
         categories,
         Quentity,
-        shipping , 
+        shipping ,
+        sold, 
         loading , 
         createdProduct ,
         redirectToProfile,
@@ -75,26 +77,32 @@ const AddProduct = () => {
                     Quentity: '',
                     photo: '',
                     shipping : '', 
+                    error: '',
+                    sold: 0,
                     loading : false, 
                     createdProduct: data.name
                 })
             }
         })
     }
-const showErrorMsg = () => {
-    return(
-        <div className = "alert alert-danger" style = {{display : error ? '' :'none'}}>{error}</div>
+    const showError = () => (
+        <div className="alert alert-danger" style={{ display: error ? '' : 'none' }}>
+            {error}
+        </div>
     );
-    }
-    const showSuccessMsg = () => {
-        return(
-            <div className = "alert alert-info" style = {{display : createdProduct ? '' :'none'}}>
-                <h2>
-                {createdProduct} is created
-                </h2>
-                </div>
+
+    const showSuccess = () => (
+        <div className="alert alert-info" style={{ display: createdProduct ? '' : 'none' }}>
+            <h2>{`${createdProduct}`} is created!</h2>
+        </div>
+    );
+
+    const showLoading = () =>
+        loading && (
+            <div className="alert alert-success">
+                <h2>Loading...</h2>
+            </div>
         );
-    }
 /*const goBack = () => {
     if(success) 
     {
@@ -156,6 +164,11 @@ const showErrorMsg = () => {
             </div>
             <br></br>
             <div className="form-group">
+                <label className ="text-muted ">sold</label>
+                <input type = "Number"  className ="form-control" value = {sold} onChange = {onChangeHandeler('sold')}></input>
+            </div>
+            <br></br>
+            <div className="form-group">
             <button className = "btn btn-primary">Submit</button>
             </div>
             
@@ -166,8 +179,8 @@ const showErrorMsg = () => {
         <Layout title = 'Add New Product '  discreption = "Are you ready to add new product ? "  className ="container col-md-8 offset-md-2">
             <div className = "row">
                 <div className = "col-md-8 offset-md-2">
-                    {showErrorMsg()}
-                    {showSuccessMsg()}
+                    {showError()}
+                    {showSuccess()}
                     {creatUi()}
                 </div>
                 </div>

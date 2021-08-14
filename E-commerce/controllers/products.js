@@ -17,20 +17,20 @@ exports.creat = (req,res) => {
         }
         // make constrains to file size
         //maximum file size = 1000000 =====> 1 mb 
-        if (files.photo.size > 1000000)
+        const {name,description,price,category,Quentity,shipping,sold} = fields
+        if(!name || !description || !price || !category || !Quentity || !shipping || !files.photo )
+        {
+            return res.status(400).json({
+                error: "All fields are rquired"
+            });
+        }
+        if ((files.photo !== null) && (files.photo.size > 1000000))
         {
             return res.status(400).json({
                 error: "Sorry,can't upload this image"
             });
         }
         // add some validation  
-        const {name,description,price,category,Quentity,shipping,sold} = fields
-        if(!name || !description || !price || !category || !Quentity || !shipping )
-        {
-            return res.status(400).json({
-                error: "All fields are rquired"
-            });
-        }
         
         let product = new Product(fields);
 
@@ -70,7 +70,7 @@ exports.update = (req, res) => {
 
         if (files.photo) {
             // console.log("FILES PHOTO: ", files.photo);
-            if (files.photo.size > 1000000) {
+            if ((files.photo.size > 1000000)) {
                 return res.status(400).json({
                     error: "Image should be less than 1mb in size"
                 });

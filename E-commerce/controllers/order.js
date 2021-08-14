@@ -1,6 +1,5 @@
 const { Order, CartItem } = require('../models/order')
 const {errorHandler} = require('../helpers/dbErrorHandler');
-const { sortBy } = require('lodash');
 exports.create = (req,res) => {
     req.body.order.user = req.profile;
     const order = new Order(req.body.order);
@@ -27,7 +26,6 @@ exports.listOrders = (req, res) => {
                     error: errorHandler(err)
                 });
             }
-            console.log("Mine",orders)
             return res.json(orders);
         });
 };

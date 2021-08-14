@@ -128,7 +128,7 @@ const Orders = () => {
                                         Amount: ${o.amount}
                                     </li>
                                     <li className="list-group-item">
-                                        Ordered by: {o.user.name}
+                                        Ordered by: {o.user !== null && o.user.name}
                                     </li>
                                     <li className="list-group-item">
                                         Ordered on:{" "}
